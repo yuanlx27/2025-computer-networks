@@ -1,17 +1,10 @@
 #let title = "Assignment 2"
-#let author = "Langxi Yuan"
+#let student = (name: "Langxi Yuan", id: "23336294")
 
 #set document(
   title: title,
-  author: author,
+  author: student.name,
 )
-
-#set heading(numbering: "1.")
-
-#set par(justify: true)
-
-#show raw.where(block: true): it => block(fill: luma(90%), inset: 0.3em, outset: 0.3em, radius: 0.2em, it)
-#show raw.where(block: false): it => box(fill: luma(90%), inset: (x: 0.3em), outset: (y: 0.3em), radius: 0.2em, it)
 
 #page({
   set align(center)
@@ -20,29 +13,125 @@
 
   v(1em)
 
-  text(size: 2em, author)
+  text(size: 1.5em, student.name)
+
+  v(0em)
+
+  text(size: 1.5em, student.id)
 })
 
-= Name Server Lookup
+= 1
 
 #figure(
-  caption: "Results",
-  image("assets/images/20251003-082945.png"),
-) <p1>
+  image("assets/images/20251004-175849.png"),
+)
 
-From @p1, we can tell that:
-(1) the IP address of `www.iitb.ac.in` is `103.21.124.133`;
-(2) the address is provided by the DNS server `10.8.8.8`;
-(3) the server is non-authoritative;
-(4) the authoritative name server `dns1.iitb.ac.in`; to find its IP address, we can run ```sh nslookup``` on it.
+= 2
 
-= DNS Cache on Our Computer
+#figure(
+  image("assets/images/20251004-175920.png"),
+)
 
-On our host, the DNS cache is managed by NetworkManager instead of `systemd-resolved`.
-Thus, to clear the DNS cache, we shall run:
+= 3
 
-```sh
-sudo systemctl restart NetworkManager
-```
+#figure(
+  image("assets/images/20251004-175948.png"),
+)
 
-= Tracing DNS with Wireshark
+= 4
+
+#figure(
+  image("assets/images/20251004-180517.png"),
+)
+
+
+= 5
+
+#figure(
+  image("assets/images/20251005-042324.png"),
+)
+
+= 6
+
+#figure(
+  image("assets/images/20251005-042529.png"),
+)
+
+= 7
+
+#figure({
+  image("assets/images/20251005-042711.png")
+  image("assets/images/20251005-042829.png")
+})
+
+= 8
+
+#figure(
+  image("assets/images/20251005-043140.png"),
+)
+
+= 9
+
+#figure(
+  image("assets/images/20251005-043255.png"),
+)
+
+= 10
+
+#figure(
+  image("assets/images/20251005-055527.png"),
+)
+
+= 11
+
+#figure(
+  image("assets/images/20251005-060046.png"),
+)
+
+There is no second DNS query for gaia.cs.umass.edu because the DNS entry is already cached.
+
+= 12
+
+#figure({
+  image("assets/images/20251005-060739.png")
+  image("assets/images/20251005-060808.png")
+})
+
+= 13
+
+#figure(
+  image("assets/images/20251005-065314.png"),
+)
+
+Yes.
+
+= 14
+
+#figure(
+  image("assets/images/20251005-070831.png"),
+)
+
+= 15
+
+#figure(
+  image("assets/images/20251005-070943.png"),
+)
+
+= 16
+
+#figure(
+  image("assets/images/20251005-072635.png"),
+)
+
+= 17
+
+#figure(
+  image("assets/images/20251005-072833.png"),
+)
+
+= 18
+
+#figure({
+  image("assets/images/20251005-082521.png")
+  image("assets/images/20251005-082640.png")
+})
