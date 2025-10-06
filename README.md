@@ -1,3 +1,3 @@
-# 2025 Computer Networks Lab
+# 2025 Computer Networks
 
 [Course homepage](https://huangqy89.github.io/cn-2025).
