@@ -102,10 +102,30 @@ The `MAIL FROM:` in SMTP is a message that indicates the sender of the email. Th
     ) <fig-1>
 
   + 
+
+  + My school's Web server have multiple IP addresses: www.sysu.edu.cn(202.116.64.8, 2001:250:3002:10::8).
+
+  + "Sorry, we found no results for www.sysu.edu.cn".
+
+  + An attacker can use _whois_ databases and the nslookup tool to determine the institution's IP address ranges, DNS servers, etc.
+
+  + It helps researchers, law enforcement, and network administrators investigate cybercrime or misuse.
 ]
 
 = P23
 
+#solution[
+  Make the server transmit to each peer at a rate of $min{u_s / N, d_min}$.
+]
+
 = P24
+
+#solution[
+  + There are $N F$ bits in total to be send. To distribute these bits in $F / u_s$, we would need a total distribution rate of $N u_s$. This can only be achieved if each bit sent from the server to some peer is simultaneously sent from that peer to all other peers. Since the peers each have a different distribution rate, we should split the server's rate with respect to this. To be more specific, the server should transmit to peer $i$ at a rate of $r_i = u_i / (sum u_j) dot u_s$.
+
+  + 
+
+  + This is concluded from (a) and (b).
+]
 
 = P26
