@@ -11,8 +11,14 @@
 
 #set par(justify: true)
 
+#show link: set text(fill: blue)
+
 #show raw.where(block: true): it => block(fill: luma(90%), inset: 0.2em, outset: 0.2em, radius: 0.2em, it)
 #show raw.where(block: false): it => box(fill: luma(90%), inset: (x: 0.2em), outset: (y: 0.2em), radius: 0.2em, it)
+
+#let solution(body) = block(inset: 0.5em)[
+  *_Solution._* #body
+]
 
 #page({
   set align(center)
@@ -80,7 +86,23 @@ The `MAIL FROM:` in SMTP is a message that indicates the sender of the email. Th
 
 = P18
 
-+ 
+#solution[
+  + A _whois_ database is a database that stores an Internet resource's registered users or assignees.
+
+  + See @fig-1.
+
+    #figure(
+      caption: "whois query results",
+      table(
+        columns: 3,
+        table.header([*whois database*], [*domain name*], [*DNS server*]),
+        "who.is", "archlinux.org", "helium.ns.hetzner.de",
+        "www.whois.com", "nixos.org", "ns-161-c.gandi.net",
+      )
+    ) <fig-1>
+
+  + 
+]
 
 = P23
 
