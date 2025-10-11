@@ -40,76 +40,93 @@
   
 = P4
 
-+ The URL is http://gaia.cs.umass.edu/cs453/index.html.
-  The `Host` line contains the server's name and the `GET` line contains the file's name.
+#solution[
+  + The URL is http://gaia.cs.umass.edu/cs453/index.html. The `Host` line contains the server's name and the `GET` line contains the file's name.
 
-+ `HTTP 1.1`, as shown in the `GET` line.
+  + `HTTP 1.1`, as shown in the `GET` line.
 
-+ Persistent connection, indicated by `Connection: keep-alive`.
+  + Persistent connection, indicated by `Connection: keep-alive`.
 
-+ Not specified.
+  + Not specified.
 
-+ Netscape 7.2 running on Windows XP, specified in the `User-Agent` line.
-  The browser type (User-Agent) is sent so that the server can customize the content for different browsers.
+  + Netscape 7.2 running on Windows XP, specified in the `User-Agent` line. The browser type (User-Agent) is sent so that the server can customize the content for different browsers.
+]
 
 = P7
 
-Time to obtain IP address: $"RTT"_1 + "RTT"_2 + ... + "RTT"_n$.
+#solution[
+  Let $r_i$ denote the RTT to the $i$-th server.
 
-Time to initiate TCP connection: $"RTT"_0$.
+  - Time to obtain IP address: $r_1 + r_2 + ... + r_n$.
 
-Time to send HTTP request and receive the first byte of HTTP response: $"RTT"_0$.
+  - Time to initiate TCP connection: $r_0$.
 
-Transmission time: $0.002 times "RTT"_0$.
+  - Time to send HTTP request and receive the first byte of HTTP response: $r_0$.
 
-Total response time: $2.002 times "RTT"_0 + "RTT"_1 + "RTT"_2 + ... + "RTT"_n$.
+  - Transmission time: $0.002 times r_0$.
+
+  Total response time: $2.002 times r_0 + r_1 + r_2 + ... + r_n$.
+]
 
 = P8
 
-+ $"RTT"_1 + ... + "RTT"_n + "RTT"_0 + "RTT"_0 + 9 dot 2 "RTT"_0 = (n + 20) "RTT"$.
+#solution[
+  Let $r$ denote one RTT unit.
 
-+ $"RTT"_1 + ... + "RTT"_n + "RTT"_0 + "RTT"_0 + ceil.l 9 / 6 ceil.r dot 2 "RTT"_0 = (n + 6) "RTT"_0$.
+  + $(r_1 + ... + r_n) + r_0 + r_0 + (9 dot 2 r_0) = (n + 20) r$.
 
-+ #enum(
-    [
-      Without pipelining: $"RTT"_1 + ... + "RTT"_n + "RTT"_0 + "RTT"_0 + 9 dot "RTT"_0 = (n + 11) "RTT"_0$;
-    ],
-    [
-      With pipelining: $"RTT"_1 + ... + "RTT"_n + "RTT"_0 + "RTT"_0 + "RTT"_0 = (n + 3) "RTT"_0$.
-    ],
-    numbering: "1)",
-  )
+  + $(r_1 + ... + r_n) + r_0 + r_0 + (ceil.l 9 / 6 ceil.r dot 2 r_0) = (n + 6) r$.
+
+  + #enum(
+      numbering: "1)",
+      [ Without pipelining: $(r_1 + ... + r_n) + r_0 + r_0 + 9 r_0 = (n + 11) r$; ],
+      [ With pipelining: $(r_1 + ... + r_n) + r_0 + r_0 + r_0 = (n + 3) r$. ],
+    )
+]
 
 = P15
 
-The `MAIL FROM:` in SMTP is a message that indicates the sender of the email. The `From:` in the mail is not an SMTP message, but a line in the body of the message.
+#solution[
+  The `MAIL FROM` in SMTP is a message that indicates the sender of the email. The `From` in the mail is not an SMTP message, but a line in the body of the message.
+]
 
 = P18
 
 #solution[
   + A _whois_ database is a database that stores an Internet resource's registered users or assignees.
 
-  + See @fig-1.
+  + See @tab-1.
 
-    #figure(
-      caption: "whois query results",
-      table(
-        columns: 3,
-        table.header([*whois database*], [*domain name*], [*DNS server*]),
-        "who.is", "archlinux.org", "helium.ns.hetzner.de",
-        "www.whois.com", "nixos.org", "ns-161-c.gandi.net",
-      )
-    ) <fig-1>
+  + See @tab-2.
 
-  + 
-
-  + My school's Web server have multiple IP addresses: www.sysu.edu.cn(202.116.64.8, 2001:250:3002:10::8).
+  + My school: www.sysu.edu.cn (202.116.64.8, 2001:250:3002:10::8).
 
   + "Sorry, we found no results for www.sysu.edu.cn".
 
   + An attacker can use _whois_ databases and the nslookup tool to determine the institution's IP address ranges, DNS servers, etc.
 
   + It helps researchers, law enforcement, and network administrators investigate cybercrime or misuse.
+
+  #figure(
+    caption: [_whois_ query results],
+    table(
+      columns: 3,
+      table.header([*whois database*], [*domain name*], [*DNS server*]),
+      [who.is], [archlinux.org], [helium.ns.hetzner.de],
+      [www.whois.com], [nixos.org], [ns-161-c.gandi.net],
+    ),
+  ) <tab-1>
+
+  #figure(
+    caption: [nslookup results],
+    table(
+      columns: 4,
+      align: center + horizon,
+      table.header([*domain name*], [*web server(s)*], [*name server(s)*], [*mail server(s)*]),
+      [helium.ns.hetzner.de], [helium.ns.hetzner.de \ 193.47.99.5], [ns1.your-server.de], [postmaster.your-server.de],
+      [ns-161-c.gandi.net], [ns-161-c.gandi.net \ 217.70.187.162], [dns0.gandi.net], [hostmaster.gandi.net],
+    ),
+  ) <tab-2>
 ]
 
 = P23
@@ -121,9 +138,18 @@ The `MAIL FROM:` in SMTP is a message that indicates the sender of the email. Th
 = P24
 
 #solution[
-  "It turns out that if we imagine that each peer can redistribute a bit as soon as it receives the bit, then there is a redistribution scheme that actually achieves this lower bound." To achieve this, each peer's download rate must not exceed its maximum upload rate $u_i$.
+  "It turns out that if we imagine that each peer can redistribute a bit as soon as it receives the bit, then there is a redistribution scheme that actually achieves this lower bound." To achieve this, we must have
 
-  Let $ r_i = min{u_i, u_i / (sum u_j) times u_s} $ denote the transmission rate from the server to peer $i$. Then 
+  $
+    r_1 + ... + r_N <= u_s, \
+    (N - 1) r_i <= u_i, wide "for" i = 1, ..., N,
+  $
+
+  where $r_i$ is the actual transmission rate from the server to peer $i$. Therefore, for (a), since $u_s$ is rather small, our $r$'s are capped by the first inequality, and we would let $r_i = u_i / (u_1 + ... + u_N) times u_s$.
+
+  For (b), $r$'s are capped by the second inequality, leaving $r_i = u_i / (N - 1)$. Moreover, to make full use of the server's capacity, we should split the residual rate $r_r = u_s - (r_1 + ... + r_N)$ equally to all peers.
+
+  For (c), just combine the conclusions from (a) and (b) with Equation 2.2.
 ]
 
 = P26
