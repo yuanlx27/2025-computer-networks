@@ -121,11 +121,15 @@ The `MAIL FROM:` in SMTP is a message that indicates the sender of the email. Th
 = P24
 
 #solution[
-  + There are $N F$ bits in total to be send. To distribute these bits in $F / u_s$, we would need a total distribution rate of $N u_s$. This can only be achieved if each bit sent from the server to some peer is simultaneously sent from that peer to all other peers. Since the peers each have a different distribution rate, we should split the server's rate with respect to this. To be more specific, the server should transmit to peer $i$ at a rate of $r_i = u_i / (sum u_j) dot u_s$.
+  "It turns out that if we imagine that each peer can redistribute a bit as soon as it receives the bit, then there is a redistribution scheme that actually achieves this lower bound." To achieve this, each peer's download rate must not exceed its maximum upload rate $u_i$.
 
-  + 
-
-  + This is concluded from (a) and (b).
+  Let $ r_i = min{u_i, u_i / (sum u_j) times u_s} $ denote the transmission rate from the server to peer $i$. Then 
 ]
 
 = P26
+
+#solution[
+  Alice is mostly correct. In BitTorrent, peers that contribute more bandwidth get priority when downloading. If Bob be a pure free-rider, others will typically deprioritize or refuse to upload to him.
+
+  However, Bob can write a script to make his different hosts ask for different chunks of the file. In this way, each host appears as a "new" peer and can exploit initial generosity from seeders.
+]
