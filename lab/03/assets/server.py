@@ -8,6 +8,7 @@ def handle_client(connectionSocket, address):
     print(f"[连接建立] 客户端 {address} 已连接")
     try:
         while True:
+            # 接收客户端消息
             data = connectionSocket.recv(1024)
             if not data:
                 break
@@ -19,6 +20,7 @@ def handle_client(connectionSocket, address):
 
 
 def main():
+    # 初始化服务器
     serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serverSocket.bind(ADDRESS)
     serverSocket.listen(1)
@@ -26,6 +28,7 @@ def main():
 
     while True:
         connectionSocket, address = serverSocket.accept()
+        # 多线程处理客户端连接
         thread = threading.Thread(target=handle_client, args=(connectionSocket, address))
         thread.daemon = True
         thread.start()
