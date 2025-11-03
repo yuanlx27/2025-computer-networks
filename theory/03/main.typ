@@ -92,7 +92,7 @@ Suppose that they are connected by a channel with a transmission rate, $R$, of 1
 
 #figure(
   caption: "Figure 3.17 from textbook",
-  image("assets/images/20251030-064934.png")
+  image("assets/images/20251030-064934.png"),
 ) <fig-1>
 
 #solution[
@@ -122,13 +122,21 @@ Assume that the medium does not reorder messages. Answer the following questions
 + What are all possible values of the ACK field in all possible messages currently propagating back to the sender at time $t$? Justify your answer.
 
 #solution[
+  + Depending on how many ACKs have been received, the sender's window begins somewhere in the range $[k - 4, k] (mod 1024)$.
+
+  + From (a), the possible ACK values are in the range $[k - 5, k - 1] (mod 1024)$.
 ]
 
 = P23
 
 Consider the GBN and SR protocols.
 Suppose the sequence number space is of size $k$.
-What is the largest allowable sender window that will avoid the occurrence of problems such as that in Figure 3.27 for each of these protocols?
+What is the largest allowable sender window that will avoid the occurrence of problems such as that in @fig-2 for each of these protocols?
+
+#figure(
+  caption: "Figure 3.27 from textbook",
+  image(width: 80%, "assets/images/20251102-120153.png"),
+) <fig-2>
 
 #solution[
 ]
@@ -158,18 +166,60 @@ Host B sends an acknowledgment whenever it receives a segment from Host A.
 = P32
 
 Consider the TCP procedure for estimating RTT.
-Suppose that $alpha = 0.1$. Let SampleRTT#sub[1] be the most recent sample RTT, let SampleRTT2 be the next
-most recent sample RTT, and so on.
-a. For a given TCP connection, suppose four acknowledgments have been
-returned with corresponding sample RTTs: SampleRTT4, SampleRTT3,
-SampleRTT2, and SampleRTT1. Express EstimatedRTT in terms of
-the four sample RTTs.
-b. Generalize your formula for n sample RTTs.
-c. For the formula in part (b) let n approach infinity. Comment on why this
-averaging procedure is called an exponential moving average.
+Suppose that $alpha = 0.1$. Let $"SampleRTT"_1$ be the most recent sample RTT, let $"SampleRTT"_2$ be the next most recent sample RTT, and so on.
+
++ For a given TCP connection, suppose four acknowledgments have been returned with corresponding sample RTTs: $"SampleRTT"_4$, $"SampleRTT"_3$, $"SampleRTT"_2$, and $"SampleRTT"_1$.
+  Express EstimatedRTT in terms of the four sample RTTs.
+
++ Generalize your formula for $n$ sample RTTs.
+
++ For the formula in part (b) let $n$ approach infinity. Comment on why this averaging procedure is called an exponential moving average.
 
 = P36
 
+In Section 3.5.4, we saw that TCP waits until it has received three duplicate ACKs before performing a fast retransmit.
+Why do you think the TCP designers chose not to perform a fast retransmit after the first duplicate ACK for a segment is received?
+
 = P40
 
+Consider @fig-3.
+Assuming TCP Reno is the protocol experiencing the behavior shown above, answer the following questions.
+In all cases, you should provide a short discussion justifying your answer.
+
++ Identify the intervals of time when TCP slow start is operating.
+
++ Identify the intervals of time when TCP congestion avoidance is operating.
+
++ After the 16th transmission round, is segment loss detected by a triple duplicate ACK or by a timeout?
+
++ After the 22nd transmission round, is segment loss detected by a triple duplicate ACK or by a timeout?
+
++ What is the initial value of ssthresh at the first transmission round?
+
++ What is the value of ssthresh at the 18th transmission round?
+
++ What is the value of ssthresh at the 24th transmission round?
+
++ During what transmission round is the 70th segment sent?
+
++ Assuming a packet loss is detected after the 26th round by the receipt of a triple duplicate ACK, what will be the values of the congestion window size and of ssthresh?
+
++ Suppose TCP Tahoe is used (instead of TCP Reno), and assume that triple duplicate ACKs are received at the 16th round.
+  What are the ssthresh and the congestion window size at the 19th round?
+
++ Again suppose TCP Tahoe is used, and there is a timeout event at 22nd round.
+  How many packets have been sent out from 17th round till 22nd round, inclusive?
+
+#figure(
+  caption: "Figure 3.58 from textbook",
+  image(width: 80%, "assets/images/20251103-080212.png"),
+) <fig-3>
+
 = P43
+
+Host A is sending an enormous file to Host B over a TCP connection.
+Over this connection there is never any packet loss and the timers never expire.
+Denote the transmission rate of the link connecting Host A to the Internet by $R$ bps.
+Suppose that the process in Host A is capable of sending data into its TCP socket at a rate $S$ bps, where $S = 10 dot R$.
+Further suppose that the TCP receive buffer is large enough to hold the entire file, and the send buffer can hold only one percent of the file.
+What would prevent the process in Host A from continuously passing data to its TCP socket at rate $S$ bps? TCP flow control? TCP congestion control? Or something else? Elaborate.
