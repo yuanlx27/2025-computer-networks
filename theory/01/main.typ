@@ -1,0 +1,235 @@
+#import "@local/sysu-templates:0.2.0": exercise
+
+#set enum(numbering: "a.")
+#show link: set text(fill: blue)
+
+#show: exercise.with(
+  title: "Exercise 1",
+  subtitle: "Computer Networks (Theory)",
+  student: (name: "Langxi Yuan", id: "23336294"),
+)
+
+#page([
+  #set align(center + horizon)
+
+  Made with #link("https://typst.app")[Typst].
+
+  Source code available at:
+
+  https://github.com/yuanlx27/2025-computer-networks
+])
+
+#let solution(body) = block(inset: 0.5em, width: 100%)[
+  *_Solution._* #body
+]
+
+= P6
+
+This elementary problem begins to explore propagation delay and transmission delay, two central concepts in data networking.
+Consider two hosts, A and B, connected by a single link of rate $R$ bps.
+Suppose that the two hosts are separated by $m$ meters, and suppose the propagation speed along the link is $s$ meters/sec.
+Host A is to send a packet of size $L$ bits to Host B.
+
++ Express the propagation delay, $d_"prop"$, in terms of $m$ and $s$.
+
++ Determine the transmission time of the packet, $d_"trans"$, in terms of $L$ and $R$.
+
++ Ignoring processing and queuing delays, obtain an expression for the end-to-end delay.
+
++ Suppose Host A begins to transmit the packet at time $t = 0$. At time $t = d_"trans"$, where is the last bit of the packet?
+
++ Suppose $d_"prop"$ is greater than $d_"trans"$. At time $t = d_"trans"$, where is the first bit of the packet?
+
++ Suppose $d_"prop"$ is less than $d_"trans"$. At time $t = d_"trans"$, where is the first bit of the packet?
+
++ Suppose $s = 2.5 dot 10^8$, $L = 120$ bits, and $R = 56$ kbps. Find the distance $m$ so that $d_"prop"$ equals $d_"trans"$.
+
+#solution[
+  + $d_"prop" = m / s$ seconds.
+
+  + $d_"trans" = L / R$ seconds.
+
+  + $d_"end-to-end" = d_"prop" + d_"trans" = (m / s + L / R)$ seconds.
+
+  + The last bit is at Host A, just about to enter the link.
+
+  + The first bit is still in the link, and has not yet arrived at Host B.
+
+  + The first bit has already arrived at Host B.
+
+  + $m = L / R s = 120 / (56 dot 10^3) (2.5 dot 10^8) = 536$ km.
+]
+
+== P8
+
+Suppose users share a 3 Mbps link.
+Also suppose each user requires 150 kbps when transmitting, but each user transmits only 10 percent of the time.
+(See the discussion of packet switching versus circuit switching in Section 1.3.)
+
++ When circuit switching is used, how many users can be supported?
+
++ For the remainder of this problem, suppose packet switching is used.
+  Find the probability that a given user is transmitting.
+
++ Suppose there are 120 users.
+  Find the probability that at any given time, exactly $n$ users are transmitting simultaneously.
+  (Hint: Use the binomial distribution.)
+
++ Find the probability that there are 21 or more users transmitting simultaneously.
+
+#solution[
+  + $n_"users" = (3 dot 10^6) / (150 dot 10^3) = 20$.
+
+  + $p = 10% = 0.1$.
+
+  + $P("exactly" n "users") = binom(120, n) p^n (1 - p)^(120 - n)$.
+
+  + By the Central Limit Theorem, $P("51 or more users") approx 1 - P(Z <= 2.74) approx 0.003$.
+]
+
+== P9
+
+Consider the discussion in Section 1.3 of packet switching versus circuit switching in which an example is provided with a 1 Mbps link.
+Users are generating data at a rate of 100 kbps when busy, but are busy generating data only with probability $p = 0.1$.
+Suppose that the 1 Mbps link is replaced by a 1 Gbps link.
+
++ What is $N$, the maximum number of users that can be supported simultaneously under circuit switching?
+
++ Now consider packet switching and a user population of $M$ users.
+  Give a formula (in terms of $p, M, N$) for the probability that more than $N$ users are sending data.
+
+#solution[
+  + $N = (1 dot 10^9) / (100 dot 10^3) = 10000$.
+
+  + $P("more than" N "users") = sum_(k = N + 1)^M binom(M, k) p^k (1 - p)^(M - k)$.
+]
+
+== P13
+
+#set enum(numbering: "(a)")
+
++ Suppose $N$ packets arrive simultaneously to a link at which no packets are currently being transmitted or queued.
+  Each packet is of length $L$ and the link has transmission rate $R$.
+  What is the average queuing delay for the $N$ packets?
+
++ Now suppose that $N$ such packets arrive to the link every $L N / R$ seconds.
+  What is the average queuing delay of a packet?
+
+#solution[
+  + $d_"average" = 1 / N (0 + L / R + ... + (N - 1) L / R) = ((N - 1) L) / (2 R)$ seconds.
+
+  + It takes exactly $N L / R$ seconds to transmit a batch of $N$ packets.
+    Hence the buffer is empty when each batch arrive.
+    Therefore, the average queuing delay across all batches is the same as the average queuing delay for a single batch, which is $((N - 1) L) / (2 R)$ seconds.
+]
+
+#set enum(numbering: "a.")
+
+== P20
+
+Consider the throughput example corresponding to @fig-1 (b).
+Now suppose that there are $M$ client-server pairs rather than $10$.
+Denote $R_s$, $R_c$, and $R$ for the rates of the server links, client links, and network link.
+Assume all other links have abundant capacity and that there is no other traffic in the network besides the traffic generated by the $M$ client-server pairs.
+Derive a general expression for throughput in terms of $R_s$, $R_c$, $R$, and $M$.
+
+#figure(
+  caption: "Figure 1.20 from textbook",
+  image(width: 80%, "assets/images/20251103-172304.png"),
+) <fig-1>
+
+#solution[
+  $"throughput" = min{R_s, R_c, R / M}$.
+]
+
+== P25
+
+Suppose two hosts, A and B, are separated by 20000 kilometers and are connected by a direct link of $R = 2$ Mbps.
+Suppose the propagation speed over the link is $2.5 dot 10^8$ meters/sec.
+
++ Calculate the bandwidth-delay product, $R dot d_"prop"$.
+
++ Consider sending a file of 800000 bits from Host A to Host B.
+  Suppose the file is sent continuously as one large message.
+  What is the maximum number of bits that will be in the link at any given time?
+
++ Provide an interpretation of the bandwidth-delay product.
+
++ What is the width (in meters) of a bit in the link?
+  Is it longer than a football field?
+
++ Derive a general expression for the width of a bit in terms of the propagation speed $s$, the transmission rate $R$, and the length of the link $m$.
+
+#solution[
+  + $R dot d_"prop" = (2 times 10^6) dot (20000 times 10^3) / (2.5 times 10^8) = 160000$ bits.
+
+  + Same as above.
+
+  + The bandwidth-delay product of a link is the maximum number of bits that can be in the link.
+
+  + $w = (20000 times 10^3) / (160000) = 125$ meters per bit, longer than a football field.
+
+  + $w = m / (R dot d_"prop") = s / R$.
+]
+
+== P27
+
+Consider problem P25 but now with a link of $R = 1$ Gbps.
+
++ Calculate the bandwidth-delay product, $R dot d_"prop"$.
+
++ Consider sending a file of 800000 bits from Host A to Host B.
+  Suppose the file is sent continuously as one big message.
+  What is the maximum number of bits that will be in the link at any given time?
+
++ What is the width (in meters) of a bit in the link?
+
+#solution[
+  + $R dot d_"prop" = (1 times 10^9) dot (20000 times 10^3) / (2.5 times 10^8) = 80000000$ bits.
+
+  + 800000 bits. This is because the file size is smaller than the bandwidth-delay product.
+
+  + $w = (20000 times 10^3) / 80000000 = 0.25$ meters per bit.
+]
+
+== P31
+
+In modern packet-switched networks, including the Internet,
+the source host segments long, application-layer messages (for example, an image or a music file) into smaller packets and sends the packets into the network.
+The receiver then reassembles the packets back into the original message. We refer to this process as message segmentation.
+@fig-2 illustrates the end-to-end transport of a message with and without message segmentation.
+Consider a message that is $8 dot 10^6$ bits long that is to be sent from source to destination in @fig-2.
+Suppose each link in the figure is 2 Mbps. Ignore propagation, queuing, and processing delays.
+
++ Consider sending the message from source to destination without message segmentation.
+  How long does it take to move the message from the source host to the first packet switch?
+  Keeping in mind that each switch uses store-and-forward packet switching, what is the total time to move the message from source host to destination host?
+
++ Now suppose that the message is segmented into 800 packets, with each packet being 10000 bits long.
+  How long does it take to move the first packet from source host to the first switch?
+  When the first packet is being sent from the first switch to the second switch, the second packet is being sent from the source host to the first switch.
+  At what time will the second packet be fully received at the first switch?
+
++ How long does it take to move the file from source host to destination host when message segmentation is used?
+  Compare this result with your answer in part (a) and comment.
+
++ In addition to reducing delay, what are reasons to use message segmentation?
+
++ Discuss the drawbacks of message segmentation.
+
+#figure(
+  caption: "Figure 1.27 from textbook",
+  image(width: 80%, "assets/images/20251103-174527.png"),
+) <fig-2>
+
+#solution[
+  + $d_11 = (8 dot 10^6) / (2 dot 10^6) = 4$ seconds, $d_"total" = 3 d_11 = 12$ seconds.
+
+  + $d_21 = 10000 / (2 dot 10^6) = 5$ milliseconds, $d_22 = 2 d_21 = 10$ milliseconds.
+
+  + $d_"file" = 802 d_21 = 4.01$ seconds, way smaller than the first answer. This shows that message segmentation is more efficient.
+
+  + If an error occurs during transmission, only the affected segment needs to be resent, rather than the entire large message.
+
+  + Each segment needs its own header and footer, increasing total overhead and reducing efficiency.
+]
