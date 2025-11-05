@@ -1,7 +1,6 @@
 #import "@local/sysu-templates:0.2.0": exercise
 
 #set enum(numbering: "a.")
-#show link: set text(fill: blue)
 
 #show: exercise.with(
   title: "Exercise 1",
