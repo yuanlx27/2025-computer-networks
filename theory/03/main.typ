@@ -9,7 +9,7 @@
 #page([
   #set align(center + horizon)
 
-  Made with Typst.
+  Made with #link("https://typst.app")[Typst].
 
   Source code available at:
 
@@ -92,7 +92,7 @@ Suppose that they are connected by a channel with a transmission rate, $R$, of 1
 
 #figure(
   caption: "Figure 3.17 from textbook",
-  image("assets/images/20251030-064934.png"),
+  image(width: 80%, "assets/images/20251030-064934.png"),
 ) <fig-1>
 
 #solution[
@@ -139,6 +139,10 @@ What is the largest allowable sender window that will avoid the occurrence of pr
 ) <fig-2>
 
 #solution[
+  To avoid said problems, the sender's window and the receiver's window must not overlap, moludo $k$.
+  Suppose the sender's window size is $n$.
+  The worst possible case is that the receiver has send $n$ ACKs for the last $n$ packets received, and the sender has not yet received any of these ACKs.
+  In this case, there should be $n + n <= k$, that is, $n <= k / 2$.
 ]
 
 = P27
@@ -163,13 +167,23 @@ Host B sends an acknowledgment whenever it receives a segment from Host A.
   Draw a timing diagram, showing these segments and all other segments and acknowledgments sent. (Assume there is no additional packet loss.)
   For each segment in your figure, provide the sequence number and the number of bytes of data; for each acknowledgment that you add, provide the acknowledgment number.
 
+#solution[
+  + 207, 302, 80.
+
+  + 207, 80, 302.
+
+  + 127.
+
+  + 
+]
+
 = P32
 
 Consider the TCP procedure for estimating RTT.
 Suppose that $alpha = 0.1$. Let $"SampleRTT"_1$ be the most recent sample RTT, let $"SampleRTT"_2$ be the next most recent sample RTT, and so on.
 
 + For a given TCP connection, suppose four acknowledgments have been returned with corresponding sample RTTs: $"SampleRTT"_4$, $"SampleRTT"_3$, $"SampleRTT"_2$, and $"SampleRTT"_1$.
-  Express EstimatedRTT in terms of the four sample RTTs.
+  Express $"EstimatedRTT"$ in terms of the four sample RTTs.
 
 + Generalize your formula for $n$ sample RTTs.
 
