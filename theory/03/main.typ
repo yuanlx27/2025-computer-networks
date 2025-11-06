@@ -27,9 +27,11 @@
 UDP and TCP use 1s complement for their checksums.
 Suppose you have the following three 8-bit bytes: 01010011, 01100110, 01110100.
 What is the 1s complement of the sum of these 8-bit bytes?
-(Note that although UDP and TCP use 16-bit words in computing the checksum, for this problem you are being asked to consider 8-bit sums.)
+(Note that although UDP and TCP use 16-bit words in computing the checksum,
+for this problem you are being asked to consider 8-bit sums.)
 Show all work. Why is it that UDP takes the 1s complement of the sum; that is, why not just use the sum?
-With the 1s complement scheme, how does the receiver detect errors? Is it possible that a 1-bit error will go undetected? How about a 2-bit error?
+With the 1s complement scheme, how does the receiver detect errors?
+Is it possible that a 1-bit error will go undetected? How about a 2-bit error?
 
 #solution[
   First, take wrapped sum:
@@ -44,7 +46,8 @@ With the 1s complement scheme, how does the receiver detect errors? Is it possib
     (00101110)_2 stretch(->)^"reverse bits" (11010001)_2.
   $
 
-  Using 1s complement allows an easier way to detect errors: add up all received words, including the checksum, and check if the result is all 1s.
+  Using 1s complement allows an easier way to detect errors: add up all received words, including the checksum,
+  and check if the result is all 1s.
   1-bit errors will always be detected, but some 2-bit errors may not (see 4.c for an example).
 ]
 
@@ -56,7 +59,8 @@ With the 1s complement scheme, how does the receiver detect errors? Is it possib
 + Suppose you have the following 2 bytes: 11011010 and 01100101.
   What is the 1s complement of the sum of these 2 bytes?
 
-+ For the bytes in part (a), give an example where one bit is flipped in each of the 2 bytes and yet the 1s complement doesn’t change.
++ For the bytes in part (a), give an example where one bit is flipped
+  in each of the 2 bytes and yet the 1s complement doesn’t change.
 
 #solution[
   + The result is 00111110.
@@ -75,8 +79,10 @@ Now suppose the sender has a lot of data to send and the end-to-end connection e
 In this second case, would a NAK-only protocol be preferable to a protocol that uses ACKs? Why?
 
 #solution[
-  ACK protocols are more responsive, giving instant feedback, but also incur more overhead, best for frequent transmissions.
-  NAK protocols, on the other hand, use less traffic, but force the sender to wait for timeouts, better for infrequent transmissions.
+  ACK protocols are more responsive, giving instant feedback,
+  but also incur more overhead, best for frequent transmissions.
+  NAK protocols, on the other hand, use less traffic,
+  but force the sender to wait for timeouts, better for infrequent transmissions.
 
   Hence the answer is yes for the first case, and no for the second case.
 ]
@@ -87,7 +93,8 @@ Consider the cross-country example shown in @fig-1.
 How big would the window size have to be for the channel utilization to be greater than 98 percent?
 Suppose that the size of a packet is 1500 bytes, including both header fields and data.
 
-"The speed-of-light round-trip propagation delay between these two end systems, $"RTT"$, is approximately 30 milliseconds.
+"The speed-of-light round-trip propagation delay between these two end systems, $"RTT"$,
+is approximately 30 milliseconds.
 Suppose that they are connected by a channel with a transmission rate, $R$, of 1 Gbps (10#super[9] bits per second)."
 
 #figure(
@@ -119,10 +126,12 @@ Assume that the medium does not reorder messages. Answer the following questions
 
 + What are the possible sets of sequence numbers inside the sender's window at time $t$? Justify your answer.
 
-+ What are all possible values of the ACK field in all possible messages currently propagating back to the sender at time $t$? Justify your answer.
++ What are all possible values of the ACK field in all possible messages
+  currently propagating back to the sender at time $t$? Justify your answer.
 
 #solution[
-  + Depending on how many ACKs have been received, the sender's window begins somewhere in the range $[k - 4, k] (mod 1024)$.
+  + Depending on how many ACKs have been received,
+    the sender's window begins somewhere in the range $[k - 4, k] (mod 1024)$.
 
   + From (a), the possible ACK values are in the range $[k - 5, k - 1] (mod 1024)$.
 ]
@@ -131,7 +140,8 @@ Assume that the medium does not reorder messages. Answer the following questions
 
 Consider the GBN and SR protocols.
 Suppose the sequence number space is of size $k$.
-What is the largest allowable sender window that will avoid the occurrence of problems such as that in @fig-2 for each of these protocols?
+What is the largest allowable sender window
+that will avoid the occurrence of problems such as that in @fig-2 for each of these protocols?
 
 #figure(
   caption: "Figure 3.27 from textbook",
@@ -141,7 +151,8 @@ What is the largest allowable sender window that will avoid the occurrence of pr
 #solution[
   To avoid said problems, the sender's window and the receiver's window must not overlap, moludo $k$.
   Suppose the sender's window size is $n$.
-  The worst possible case is that the receiver has send $n$ ACKs for the last $n$ packets received, and the sender has not yet received any of these ACKs.
+  The worst possible case is that the receiver has send $n$ ACKs for the last $n$ packets received,
+  and the sender has not yet received any of these ACKs.
   In this case, there should be $n + n <= k$, that is, $n <= k / 2$.
 ]
 
@@ -154,7 +165,8 @@ The first and second segments contain 80 and 40 bytes of data, respectively.
 In the first segment, the sequence number is 127, the source port number is 302, and the destination port number is 80.
 Host B sends an acknowledgment whenever it receives a segment from Host A.
 
-+ In the second segment sent from Host A to B, what are the sequence number, source port number, and destination port number?
++ In the second segment sent from Host A to B,
+  what are the sequence number, source port number, and destination port number?
 
 + If the first segment arrives before the second segment, in the acknowledgment of the first arriving segment,
   what is the acknowledgment number, the source port number, and the destination port number?
@@ -164,35 +176,62 @@ Host B sends an acknowledgment whenever it receives a segment from Host A.
 
 + Suppose the two segments sent by A arrive in order at B.
   The first acknowledgment is lost and the second acknowledgment arrives after the first timeout interval.
-  Draw a timing diagram, showing these segments and all other segments and acknowledgments sent. (Assume there is no additional packet loss.)
-  For each segment in your figure, provide the sequence number and the number of bytes of data; for each acknowledgment that you add, provide the acknowledgment number.
+  Draw a timing diagram, showing these segments and all other segments and acknowledgments sent.
+  (Assume there is no additional packet loss.)
+  For each segment in your figure, provide the sequence number and the number of bytes of data;
+  for each acknowledgment that you add, provide the acknowledgment number.
 
 #solution[
   + 207, 302, 80.
 
   + 207, 80, 302.
 
-  + 127.
+  + 127\.
 
-  + 
+  + See @tab-1.
+
+#figure(
+  caption: "timing table",
+  table(
+    columns: 3,
+    table.header([*direction*], [*Seq/Ack No.*], [*note*]),
+    [$A -> B$], [127], [],
+    [$A -> B$], [207], [],
+    [$B -> A$], [207], [lost],
+    [$B -> A$], [247], [arrives after timeout],
+    [$A -> B$], [127], [retransmission],
+    [$B -> A$], [247], [response to retransmission],
+  ),
+) <tab-1>
 ]
 
 = P32
 
 Consider the TCP procedure for estimating RTT.
-Suppose that $alpha = 0.1$. Let $"SampleRTT"_1$ be the most recent sample RTT, let $"SampleRTT"_2$ be the next most recent sample RTT, and so on.
+Suppose that $alpha = 0.1$. Let $"SampleRTT"_1$ be the most recent sample RTT,
+let $"SampleRTT"_2$ be the next most recent sample RTT, and so on.
 
-+ For a given TCP connection, suppose four acknowledgments have been returned with corresponding sample RTTs: $"SampleRTT"_4$, $"SampleRTT"_3$, $"SampleRTT"_2$, and $"SampleRTT"_1$.
++ For a given TCP connection, suppose four acknowledgments have been returned
+  with corresponding sample RTTs: $"SampleRTT"_4$, $"SampleRTT"_3$, $"SampleRTT"_2$, and $"SampleRTT"_1$.
   Express $"EstimatedRTT"$ in terms of the four sample RTTs.
 
 + Generalize your formula for $n$ sample RTTs.
 
-+ For the formula in part (b) let $n$ approach infinity. Comment on why this averaging procedure is called an exponential moving average.
++ For the formula in part (b) let $n$ approach infinity.
+  Comment on why this averaging procedure is called an exponential moving average.
+
+#solution[
+  + $"EstimatedRTT" = alpha sum_(k = 1)^4 (1 - alpha)^(k - 1) "SampleRTT"_k$.
+
+  + $"EstimatedRTT" = alpha sum_(k = 1)^n (1 - alpha)^(k - 1) "SampleRTT"_k$.
+]
 
 = P36
 
-In Section 3.5.4, we saw that TCP waits until it has received three duplicate ACKs before performing a fast retransmit.
-Why do you think the TCP designers chose not to perform a fast retransmit after the first duplicate ACK for a segment is received?
+In Section 3.5.4, we saw that TCP waits until it has received three duplicate ACKs
+before performing a fast retransmit.
+Why do you think the TCP designers chose not to perform a fast retransmit
+after the first duplicate ACK for a segment is received?
 
 = P40
 
@@ -216,7 +255,8 @@ In all cases, you should provide a short discussion justifying your answer.
 
 + During what transmission round is the 70th segment sent?
 
-+ Assuming a packet loss is detected after the 26th round by the receipt of a triple duplicate ACK, what will be the values of the congestion window size and of ssthresh?
++ Assuming a packet loss is detected after the 26th round by the receipt of a triple duplicate ACK,
+  what will be the values of the congestion window size and of ssthresh?
 
 + Suppose TCP Tahoe is used (instead of TCP Reno), and assume that triple duplicate ACKs are received at the 16th round.
   What are the ssthresh and the congestion window size at the 19th round?
@@ -234,6 +274,9 @@ In all cases, you should provide a short discussion justifying your answer.
 Host A is sending an enormous file to Host B over a TCP connection.
 Over this connection there is never any packet loss and the timers never expire.
 Denote the transmission rate of the link connecting Host A to the Internet by $R$ bps.
-Suppose that the process in Host A is capable of sending data into its TCP socket at a rate $S$ bps, where $S = 10 dot R$.
-Further suppose that the TCP receive buffer is large enough to hold the entire file, and the send buffer can hold only one percent of the file.
-What would prevent the process in Host A from continuously passing data to its TCP socket at rate $S$ bps? TCP flow control? TCP congestion control? Or something else? Elaborate.
+Suppose that the process in Host A is capable of sending data into its TCP socket
+at a rate $S$ bps, where $S = 10 dot R$.
+Further suppose that the TCP receive buffer is large enough to hold the entire file,
+and the send buffer can hold only one percent of the file.
+What would prevent the process in Host A from continuously passing data to its TCP socket at rate $S$ bps?
+TCP flow control? TCP congestion control? Or something else? Elaborate.
