@@ -190,19 +190,19 @@ Host B sends an acknowledgment whenever it receives a segment from Host A.
 
   + See @tab-1.
 
-#figure(
-  caption: "timing table",
-  table(
-    columns: 3,
-    table.header([*direction*], [*Seq/Ack No.*], [*note*]),
-    [$A -> B$], [127], [],
-    [$A -> B$], [207], [],
-    [$B -> A$], [207], [lost],
-    [$B -> A$], [247], [arrives after timeout],
-    [$A -> B$], [127], [retransmission],
-    [$B -> A$], [247], [response to retransmission],
-  ),
-) <tab-1>
+  #figure(
+    caption: "timing table",
+    table(
+      columns: 3,
+      table.header([*direction*], [*Seq/Ack No.*], [*note*]),
+      [$A -> B$], [127], [],
+      [$A -> B$], [207], [],
+      [$B -> A$], [207], [lost],
+      [$B -> A$], [247], [arrives after timeout],
+      [$A -> B$], [127], [retransmission],
+      [$B -> A$], [247], [response to retransmission],
+    ),
+  ) <tab-1>
 ]
 
 = P32
@@ -224,6 +224,10 @@ let $"SampleRTT"_2$ be the next most recent sample RTT, and so on.
   + $"EstimatedRTT" = alpha sum_(k = 1)^4 (1 - alpha)^(k - 1) "SampleRTT"_k$.
 
   + $"EstimatedRTT" = alpha sum_(k = 1)^n (1 - alpha)^(k - 1) "SampleRTT"_k$.
+
+  + $"EstimatedRTT" = 1 / 9 sum_(k = 1)^oo (9 / 10)^k "SampleRTT"_k$.
+
+    Samples' weights decrease exponentially.
 ]
 
 = P36
@@ -233,10 +237,17 @@ before performing a fast retransmit.
 Why do you think the TCP designers chose not to perform a fast retransmit
 after the first duplicate ACK for a segment is received?
 
+#solution[
+  Suppose TCP performs fast retransmit after receiving the $x$-th duplicate ACK.
+  When $x$ is small, retransmission is more timely but also more prone to false positives;
+  when $x$ is large, the possibility of false positives decrease, but retransmission delay increases.
+  After weighing the trade-offs, TCP designers chose $x = 3$ as a compromise.
+]
+
 = P40
 
 Consider @fig-3.
-Assuming TCP Reno is the protocol experiencing the behavior shown above, answer the following questions.
+Assuming TCP Reno is the protocol experiencing the behavior shown below, answer the following questions.
 In all cases, you should provide a short discussion justifying your answer.
 
 + Identify the intervals of time when TCP slow start is operating.
@@ -269,6 +280,30 @@ In all cases, you should provide a short discussion justifying your answer.
   image(width: 80%, "assets/images/20251103-080212.png"),
 ) <fig-3>
 
+#solution[
+  + $[1, 6] union [23, 26]$.
+
+  + $[6, 16] union [17, 22]$.
+
+  + Triple duplicate ACK. Segment loss detected by timeout would reduce the congestion window size to 1.
+
+  + Timeout.
+
+  + 32\. It is at this window size that slow start stops.
+
+  + 21\. The threshold is set to half of the congestion window size when loss is detected.
+
+  + 14\.
+
+  + 7th. Take sums.
+
+  + 4 and 7. The congestion window size will be set to the new ssthresh value plus 3.
+
+  + 21 and 1.
+
+  + $1 + 2 + 4 + 8 + 16 + 21 = 52$.
+]
+
 = P43
 
 Host A is sending an enormous file to Host B over a TCP connection.
@@ -280,3 +315,9 @@ Further suppose that the TCP receive buffer is large enough to hold the entire f
 and the send buffer can hold only one percent of the file.
 What would prevent the process in Host A from continuously passing data to its TCP socket at rate $S$ bps?
 TCP flow control? TCP congestion control? Or something else? Elaborate.
+
+#solution[
+  The receive window is not limiting, since it's large enough for the whole file.
+  There's no loss or delay, so the congestion window quickly opens to the maximum allowed by flow control, and hence no bottleneck.
+  But network can only drain data at rate $R << S$.
+]
