@@ -34,6 +34,15 @@ Consider the network below.
 
 #figure(image("assets/images/20251116-064539.png")) <fig-1>
 
+#solution[
+  + ```
+    Destination   Interface
+    H3            3
+    ```
+
+  + No, because the forwarding table is based only on the destination address.
+]
+
 = P4
 
 Consider the switch shown below.
@@ -50,6 +59,20 @@ assuming that a non-empty input queue is never idle?
 
 #figure(image("assets/images/20251116-064705.png")) <fig-2>
 
+#solution[
+  Minimal number of time slots is 3.
+  One possible scheduling order is as follows.
+
+  - Slot 1: send X1, Y2;
+
+  - Slot 2: send X2, Y3;
+
+  - Slot 3: send Z3.
+
+  Maximal number of time slots is also 3,
+  since we can always send two datagrams in the second slot, assuming a non-empty input queue is never idle.
+]
+
 = P6
 
 Consider a datagram network using 8-bit host addresses.
@@ -60,6 +83,16 @@ Suppose a router uses longest prefix matching and has the following forwarding t
 For each of the four interfaces, give the associated range of destination host
 addresses and the number of addresses in the range.
 
+#solution[
+  - Interface 0: `00000000` to `00111111`, 64 addresses.
+
+  - Interface 1: `01000000` to `01111111`, 64 addresses.
+
+  - Interface 2: `10000000` to `10011111`, 32 addresses.
+
+  - Interface 3: `10100000` to `11111111`, 96 addresses.
+]
+
 = P8
 
 Consider a router that interconnects three subnets: Subnet 1, Subnet 2, and Subnet 3.
@@ -69,6 +102,14 @@ Subnet 2 is to support up to 106 interfaces,
 and Subnet 3 is to support up to 15 interfaces.
 Provide three network addresses (of the form a.b.c.d/x) that satisfy these constraints.
 
+#solution[
+  - Subnet 1: 223.1.17.0/26;
+
+  - Subnet 2: 223.1.17.128/25;
+
+  - Subnet 3: 223.1.17.64/28.
+]
+
 = P11
 
 Consider a subnet with prefix 192.168.56.128/26.
@@ -76,6 +117,18 @@ Give an example of one IP address (of form xxx.xxx.xxx.xxx) that can be assigned
 Suppose an ISP owns the block of addresses of the form 192.168.56.32/26.
 Suppose it wants to create four subnets from this block, with each block having the same number of IP addresses.
 What are the prefixes (of form a.b.c.d/x) for the four subnets?
+
+#solution[
+  - IP: 192.168.56.128.
+
+  - Subnet 1: 192.168.56.0/28
+
+  - Subnet 2: 192.168.56.16/28
+
+  - Subnet 3: 192.168.56.32/28
+
+  - Subnet 4: 192.168.56.48/28
+]
 
 = P16
 
@@ -89,9 +142,29 @@ and that the network address of the home network is 192.168.1/24.
   Provide the six corresponding entries in the NAT translation table.
 
 #figure(
-  caption: "Figure 4.25 from textbook",
+  caption: [Figure 4.25 from textbook],
   image("assets/images/20251116-063228.png"),
 ) <fig-4>
+
+#solution[
+  + Home network addresses are 192.168.1.1, 192.168.1.2, 192.168.1.3, with the router interface being 192.168.1.4.
+
+  + See @tab-1.
+
+    #figure(
+      caption: [NAT translation table],
+      table(
+        columns: 2,
+        [WAN side], [LAN side],
+        [24.34.112.235, 5001], [192.168.1.1, 3345],
+        [24.34.112.235, 5002], [192.168.1.1, 3346],
+        [24.34.112.235, 5003], [192.168.1.2, 3445],
+        [24.34.112.235, 5004], [192.168.1.2, 3446],
+        [24.34.112.235, 5005], [192.168.1.3, 3545],
+        [24.34.112.235, 5006], [192.168.1.3, 3546],
+      ),
+    ) <tab-1>
+]
 
 = P19
 
@@ -112,9 +185,25 @@ Suppose that the desired forwarding behavior for datagrams arriving at s2 is as 
 Specify the flow table entries in s2 that implement this forwarding behavior.
 
 #figure(
-  caption: "Figure 4.30 from textbook",
+  caption: [Figure 4.30 from textbook],
   image("assets/images/20251116-063337.png"),
 ) <fig-5>
+
+#solution[
+  See @tab-2.
+
+  #figure(
+    caption: [s2 flow table],
+    table(
+      columns: 2,
+      [Match], [Action],
+      [Ingress Port = 1; IP Src = `10.3.*.*`; IP Dst = `10.1.*.*`], [Forward(2)],
+      [Ingress Port = 2; IP Src = `10.1.*.*`; IP Dst = `10.3.*.*`], [Forward(1)],
+      [IP Dst = `10.2.0.3`], [Forward(3)],
+      [IP Dst = `10.2.0.4`], [Forward(4)],
+    ),
+  ) <tab-2>
+]
 
 = P21
 
@@ -125,6 +214,32 @@ specified in the destination address field in the IP datagram.
 (_Hint:_ Your forwarding table rules should include the cases
 that an arriving datagram is destined for a directly attached host
 or should be forwarded to a neighboring router for eventual host delivery there.)
+
+#solution[
+  See @tab-3 and @tab-4.
+
+  #figure(
+    caption: [s1 flow table],
+    table(
+      columns: 2,
+      [Match], [Action],
+      [IP Src = `10.2.*.*`; IP Dst = `10.1.0.1`], [Forward(2)],
+      [IP Src = `10.2.*.*`; IP Dst = `10.1.0.2`], [Forward(3)],
+      [IP Src = `10.2.*.*`; IP Dst = `10.3.*.*`], [Forward(1)],
+    ),
+  ) <tab-3>
+
+  #figure(
+    caption: [s3 flow table],
+    table(
+      columns: 2,
+      [Match], [Action],
+      [IP Src = `10.2.*.*`; IP Dst = `10.3.0.5`], [Forward(2)],
+      [IP Src = `10.2.*.*`; IP Dst = `10.3.0.6`], [Forward(1)],
+      [IP Src = `10.2.*.*`; IP Dst = `10.1.*.*`], [Forward(3)],
+    ),
+  ) <tab-4>
+]
 
 = P22
 
@@ -146,3 +261,47 @@ You do not need to specify the forwarding behavior in s2 that forwards traffic t
 
 - Only UDP traffic from h1 and destined to h3 is to be delivered.
   All other traffic is blocked.
+
+#solution[
+  See @tab-5, @tab-6, @tab-7, and @tab-8.
+
+  #figure(
+    caption: [s2 flow table (senario 1)],
+    table(
+      columns: 2,
+      table.header([Match], [Action]),
+      [IP Src = `10.1.0.1`; IP Dst = `10.2.0.3`], [Forward(3)],
+      [IP Src = `10.1.0.1`; IP Dst = `10.2.0.4`], [Forward(4)],
+      [IP Src = `10.3.0.6`; IP Dst = `10.2.0.3`], [Forward(3)],
+      [IP Src = `10.3.0.6`; IP Dst = `10.2.0.4`], [Forward(4)],
+    ),
+  ) <tab-5>
+
+  #figure(
+    caption: [s2 flow table (senario 2)],
+    table(
+      columns: 2,
+      table.header([Match], [Action]),
+      [IP Src = `*.*.*.*`; IP Dst = `10.2.0.3`; Port = TCP], [Forward(3)],
+      [IP Src = `*.*.*.*`; IP Dst = `10.2.0.4`; Port = TCP], [Forward(4)],
+    ),
+  ) <tab-6>
+
+  #figure(
+    caption: [s2 flow table (senario 3)],
+    table(
+      columns: 2,
+      table.header([Match], [Action]),
+      [IP Src = `*.*.*.*`; IP Dst = `10.2.0.3`], [Forward(3)],
+    ),
+  ) <tab-7>
+
+  #figure(
+    caption: [s2 flow table (senario 4)],
+    table(
+      columns: 2,
+      table.header([Match], [Action]),
+      [IP Src = `10.1.0.1`; IP Dst = `10.2.0.3`; Port = UDP], [Forward(3)],
+    ),
+  ) <tab-8>
+]
