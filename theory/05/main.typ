@@ -27,6 +27,8 @@ With the indicated link costs, use Dijkstra's shortest-path algorithm
 to compute the shortest path from $x$ to all network nodes.
 Show how the algorithm works by computing a table similar to Table 5.1.
 
+#figure(image(width: 50%, "assets/images/20251124-192231.png")) <fig-1>
+
 = P7
 
 Consider the network fragment shown below.
@@ -36,9 +38,7 @@ and $y$ has a minimum-cost path to $u$ of 6.
 The complete paths from $w$ and $y$ to $u$ (and between $w$ and $y$) are not shown.
 All link costs in the network have strictly positive integer values.
 
-#figure(
-  "TODO",
-) <fig-1>
+#figure(image(width: 30%, "assets/images/20251124-192330.png")) <fig-2>
 
 + Give $x$'s distance vector for destinations $w$, $y$, and $u$.
 
@@ -57,6 +57,8 @@ Suppose AS3 and AS2 are running OSPF for their intra-AS routing protocol.
 Suppose AS1 and AS4 are running RIP for their intra-AS routing protocol.
 Suppose eBGP and iBGP are used for the inter-AS routing protocol.
 Initially suppose there is no physical link between AS2 and AS4.
+
+#figure(image(width: 70%, "assets/images/20251124-192436.png")) <fig-3>
 
 + Router 3c learns about prefix $x$ from which routing protocol: OSPF, RIP, eBGP, or iBGP?
 
@@ -82,16 +84,23 @@ What BGP mechanism might C use,
 so that B would hand over A-to-D traffic at its East Coast peering point?
 To answer this question, you will need to dig into the BGP specification.
 
+#figure(image(width: 60%, "assets/images/20251124-192524.png")) <fig-4>
+
 = P18
 
-Consider Figure 5.13.
+Consider @fig-5.
 B would never forward traffic destined to Y via X based on BGP routing.
 But there are some very popular applications for which data packets go to X first and then flow to Y.
 Identify one such application, and describe how data packets follow a path not given by BGP routing.
 
+#figure(
+  caption: [Figure 5.13 from textbook],
+  image(width: 80%, "assets/images/20251124-192640.png"),
+) <fig-5>
+
 = P19
 
-In Figure 5.13, suppose that there is another stub network V that is a customer of ISP A.
+In @fig-5, suppose that there is another stub network V that is a customer of ISP A.
 Suppose that B and C have a peering relationship, and A is a customer of both B and C.
 Suppose that A would like to have the traffic destined to W to come from B only,
 and the traffic destined to V from either B or C.
